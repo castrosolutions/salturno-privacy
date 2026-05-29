@@ -63,10 +63,18 @@ calendario local; solo se inhabilita la importación por foto.
 
 Cuando decides usar la función "Importar cuadrante" y tomas o eliges una
 foto del cuadrante mensual, esa foto **viaja temporalmente fuera del
-dispositivo**, junto con **tu nombre tal como lo has indicado en la
-app**, para que un servicio de reconocimiento de imágenes basado en
-**inteligencia artificial generativa** identifique los turnos que te
-corresponden dentro del cuadrante.
+dispositivo** hacia la infraestructura del responsable, donde se entrega
+a un **servicio de inteligencia artificial generativa de un tercero**
+(ver §6) para que extraiga el cuadrante de turnos de todo el mes.
+Tu nombre, tal como lo has indicado en la app, **acompaña la petición
+pero no se envía al servicio de IA**: queda únicamente en la
+infraestructura del responsable durante el procesamiento y se utiliza
+después, ya en tu dispositivo, para localizar entre los turnos
+reconocidos los que te corresponden a ti. Si además has aceptado recibir
+notificaciones de la app, junto a la petición viaja al backend un
+**identificador técnico de notificaciones push** asociado a tu
+instalación (ver §3.5), que se utiliza únicamente para avisarte cuando
+la importación ha terminado.
 
 En este modo:
 
@@ -90,11 +98,16 @@ la app no añade turnos a ciegas. Este procesamiento **no toma decisiones
 que produzcan efectos jurídicos** sobre ti ni que te afecten
 significativamente de modo similar, en el sentido del Art. 22 RGPD.
 
-Los datos enviados al servicio de reconocimiento de imágenes **no se
-utilizan para entrenar modelos de inteligencia artificial**, conforme a
-las condiciones de uso contratadas con el proveedor. **Tampoco se vende
-información personal a terceros**, ni con esa finalidad ni con ninguna
-otra.
+**Sobre el uso de los datos por el proveedor de IA.** Los datos enviados
+al servicio de reconocimiento de imágenes **no se utilizan para entrenar
+modelos de inteligencia artificial**, conforme a las condiciones de uso
+estándar del proveedor para tráfico de API (no se ha contratado un
+acuerdo de Zero Data Retention adicional). De acuerdo con esas mismas
+condiciones, el proveedor **puede conservar los inputs y outputs hasta
+30 días** con la finalidad exclusiva de detección y prevención de abuso
+del servicio; transcurrido ese plazo, su retención cesa salvo
+obligación legal del propio proveedor. **No se vende información
+personal a terceros**, ni con esa finalidad ni con ninguna otra.
 
 ### 3.3 Identidad técnica anónima de la instalación
 
@@ -138,10 +151,45 @@ etiquetas de privacidad de la App Store), estos datos figuran como **no
 vinculados a tu identidad**: el responsable no mantiene una identidad
 persistente a la que asociarlos.
 
-### 3.5 Datos que la app no recoge
+### 3.5 Identificador técnico de notificaciones push
 
-Más allá de lo descrito en §3.2, §3.3 y §3.4, la app **no** recoge en
-ningún caso:
+Cuando aceptas recibir notificaciones de la app, el sistema operativo
+del dispositivo genera un **identificador técnico de notificaciones
+push** asociado a esa instalación de la app en ese dispositivo. La app
+lo envía al responsable junto a cada importación de cuadrante para que,
+cuando el procesamiento termina, te llegue el aviso «planilla lista»
+sin necesidad de tener la app abierta. Si **no** aceptas notificaciones
+o desactivas los permisos en *Ajustes → Notificaciones → Salturno*,
+este identificador no se genera ni se envía, y la app sigue
+funcionando con normalidad: el resultado de la importación se descarga
+en cuanto vuelves a abrir la app.
+
+**Cómo se trata este identificador:**
+
+- En la plataforma del dispositivo (servicio gestionado por Apple) es
+  el identificador que el sistema operativo necesita para entregar la
+  notificación; está asociado a esa instalación concreta de la app y a
+  ese dispositivo, y lo regenera el sistema operativo si reinstalas la
+  app o transfieres el dispositivo.
+- En la infraestructura del responsable se almacena **únicamente el
+  tiempo que dura la petición de importación a la que acompaña**, dentro
+  del plazo máximo publicado en §8. Cuando ese plazo expira, el
+  identificador se elimina automáticamente con el resto de los datos
+  efímeros de esa petición.
+- **No se asocia a tu nombre, a tu identidad civil ni a ningún
+  identificador externo** más allá del propio mecanismo del sistema
+  operativo de notificaciones. **No se comparte con terceros** y **no
+  se utiliza para seguimiento publicitario**.
+
+En la terminología de las plataformas de distribución, este
+identificador figura como un identificador de dispositivo recolectado
+para funcionalidad de la app (notificaciones), **no vinculado a tu
+identidad** y **no usado para seguimiento**.
+
+### 3.6 Datos que la app no recoge
+
+Más allá de lo descrito en §3.2, §3.3, §3.4 y §3.5, la app **no**
+recoge en ningún caso:
 
 - Cuenta de usuario o credenciales (no hay registro ni inicio de
   sesión: tu nombre solo se utiliza, cuando activas la importación por
@@ -250,8 +298,10 @@ antes.
 |---|---|
 | Datos en tu dispositivo y/o en tu iCloud privado | Bajo tu control: hasta que los borres o desinstales la app |
 | Foto del cuadrante en la infraestructura del responsable | Hasta 24 horas tras la importación |
+| Foto del cuadrante en el proveedor de IA (subprocesador) | Según las condiciones estándar del proveedor: hasta 30 días con la finalidad exclusiva de detección de abuso del servicio (sin contrato adicional de Zero Data Retention) |
 | Resultado del reconocimiento (turnos extraídos) y tu nombre asociado a la petición | Hasta 72 horas tras su procesamiento |
-| Identificador técnico anónimo de la instalación | Hasta que desinstales la app |
+| Identificador técnico de notificaciones push asociado a la petición (§3.5) | Hasta 72 horas tras su procesamiento (mismo plazo que el resultado) |
+| Identificador técnico anónimo de la instalación (§3.3) | Hasta que desinstales la app |
 | Registros técnicos del servicio sin contenido personal | Según el proveedor de infraestructura |
 
 ## 9. Tus derechos
@@ -348,6 +398,7 @@ entre el dato y un identificador del usuario.
 | Resultado del reconocimiento (turnos extraídos, §3.2) | Sí, durante el procesamiento (hasta 72 horas) | No (sin asociación persistente — §3.4) | No |
 | Turnos, notas y otro contenido en tu dispositivo y en tu iCloud privado | Sí, bajo tu control exclusivo | No accesible para el responsable | No |
 | Identificador técnico anónimo de la instalación (§3.3) | Sí, únicamente para anti-abuso | No | No |
+| Identificador técnico de notificaciones push (§3.5) | Sólo si aceptas notificaciones (hasta 72 horas tras cada importación) | No (sin asociación persistente — §3.4) | No |
 | Contactos, ubicación, identificadores publicitarios, datos de uso o analítica, diagnóstico, historial de navegación o búsqueda, compras, datos financieros, datos de salud | **No** | — | — |
 
 La app **no realiza seguimiento** entre apps ni sitios web de terceros y
