@@ -5,7 +5,7 @@ description: Cómo Salturno trata tus datos.
 
 # Política de privacidad de Salturno
 
-**Última actualización:** 26 de mayo de 2026
+**Última actualización:** 29 de mayo de 2026
 
 Esta política describe cómo la aplicación **Salturno** (en adelante, "la
 app") trata los datos personales que se generan al usarla. La app está
@@ -109,10 +109,39 @@ de teléfono, ubicación ni ningún otro dato que permita asociarlo a una
 persona concreta o cruzarlo con otras apps. Se conserva mientras la app
 permanezca instalada y se elimina al desinstalarla.
 
-### 3.4 Datos que la app no recoge
+### 3.4 Cómo se relacionan estos datos en los sistemas del responsable
 
-Más allá de lo descrito en §3.2 y §3.3, la app **no** recoge en ningún
-caso:
+La app no tiene cuenta ni identifica al usuario de forma persistente. Por
+eso es importante precisar cómo conviven entre sí los datos descritos en
+§3.2 y §3.3 dentro de la infraestructura del responsable:
+
+- Cada importación de cuadrante por foto se identifica con un
+  **identificador efímero de petición** (un UUID generado en el momento).
+  La foto, tu nombre tal como lo tecleas en la app y el resultado del
+  reconocimiento se guardan asociados únicamente a ese identificador
+  efímero, que caduca con los plazos publicados en §8 (24 horas la foto;
+  72 horas el nombre y el resultado).
+- El **identificador técnico anónimo de la instalación** (§3.3) se
+  almacena por separado, junto con el contador anti-abuso. El responsable
+  **no mantiene en ningún momento una tabla, fichero ni estructura
+  interna que asocie tu nombre, la foto o el resultado del reconocimiento
+  con ese identificador técnico ni con ningún otro identificador del
+  usuario**.
+- Una vez expirados los plazos de §8, no queda en la infraestructura del
+  responsable ningún rastro asociable a tu persona. El identificador
+  técnico anónimo sobrevive hasta que desinstalas la app, pero por sí
+  solo no permite saber quién eres ni recuperar tus importaciones
+  pasadas.
+
+En la terminología de las plataformas de distribución (por ejemplo, las
+etiquetas de privacidad de la App Store), estos datos figuran como **no
+vinculados a tu identidad**: el responsable no mantiene una identidad
+persistente a la que asociarlos.
+
+### 3.5 Datos que la app no recoge
+
+Más allá de lo descrito en §3.2, §3.3 y §3.4, la app **no** recoge en
+ningún caso:
 
 - Cuenta de usuario o credenciales (no hay registro ni inicio de
   sesión: tu nombre solo se utiliza, cuando activas la importación por
@@ -307,13 +336,16 @@ Si el servicio operado por el responsable dejara de estar disponible:
 
 A modo de visión de conjunto, esta sección recoge por categorías los
 datos que trata la app, indicando si se recogen, si están vinculados a
-tu identidad y si se utilizan para algún tipo de seguimiento.
+tu identidad y si se utilizan para algún tipo de seguimiento. El criterio
+para la columna *Vinculado a tu identidad* es el descrito en §3.4: si el
+responsable mantiene o no, en sus sistemas, una asociación persistente
+entre el dato y un identificador del usuario.
 
 | Dato | Recogido por la app | Vinculado a tu identidad | Usado para seguimiento |
 |---|---|---|---|
-| Tu nombre (al usar importación por foto, §3.2) | Sí, durante el procesamiento | Sí | No |
-| Foto del cuadrante (§3.2) | Solo si activas la importación por foto | Sí, durante el procesamiento | No |
-| Resultado del reconocimiento (turnos extraídos, §3.2) | Sí, durante el procesamiento | Sí | No |
+| Tu nombre (al usar importación por foto, §3.2) | Sí, durante el procesamiento (hasta 72 horas) | No (sin cuenta de usuario; sin asociación persistente — §3.4) | No |
+| Foto del cuadrante (§3.2) | Solo si activas la importación por foto (hasta 24 horas) | No (sin asociación persistente — §3.4) | No |
+| Resultado del reconocimiento (turnos extraídos, §3.2) | Sí, durante el procesamiento (hasta 72 horas) | No (sin asociación persistente — §3.4) | No |
 | Turnos, notas y otro contenido en tu dispositivo y en tu iCloud privado | Sí, bajo tu control exclusivo | No accesible para el responsable | No |
 | Identificador técnico anónimo de la instalación (§3.3) | Sí, únicamente para anti-abuso | No | No |
 | Contactos, ubicación, identificadores publicitarios, datos de uso o analítica, diagnóstico, historial de navegación o búsqueda, compras, datos financieros, datos de salud | **No** | — | — |
